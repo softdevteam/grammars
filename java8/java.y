@@ -1,4 +1,5 @@
 %start goal
+%left 'DEFAULT'
 %%
 goal : compilation_unit;
 
@@ -186,10 +187,19 @@ modifiers_opt:
 modifiers :     modifier 
     |    modifiers modifier
     ;
-modifier :    "PUBLIC" | "PROTECTED" | "PRIVATE"
-    |    "STATIC"
-    |    "ABSTRACT" | "FINAL" | "NATIVE" | "SYNCHRONIZED" | "TRANSIENT" | "VOLATILE"
-    |    "STRICTFP"
+modifier :
+      "PUBLIC"
+    | "PROTECTED"
+    | "PRIVATE"
+    | "STATIC"
+    | "ABSTRACT"
+    | "FINAL"
+    | "NATIVE"
+    | "SYNCHRONIZED"
+    | "TRANSIENT"
+    | "VOLATILE"
+    | "STRICTFP"
+    | "DEFAULT"
     ;
 
 class_declaration : 
@@ -373,7 +383,7 @@ interface_member_declarations :
     ;
 interface_member_declaration :
         constant_declaration
-    |    abstract_method_declaration
+    |    interface_method_declaration
     |    class_declaration
     |    enum_declaration
     |    interface_declaration
@@ -382,8 +392,8 @@ interface_member_declaration :
 constant_declaration :
         field_declaration
     ;
-abstract_method_declaration :
-        method_header "SEMICOLON"
+interface_method_declaration :
+        method_header method_body
     ;
 
 array_initializer :
@@ -395,8 +405,8 @@ array_initializer :
 variable_initializers :
         variable_initializer 
     |    variable_initializers "COMMA" variable_initializer
-
     ;
+
 block :    "LBRACE" block_statements_opt "RBRACE" ;
 
 block_statements_opt :
@@ -496,7 +506,7 @@ switch_block_statement_groups :
     |    switch_block_statement_groups switch_block_statement_group
     ;
 switch_block_statement_group :
-        switch_labels block_statements
+        switch_labels block_statements %prec 'DEFAULT'
     ;
 switch_labels :
         switch_label
