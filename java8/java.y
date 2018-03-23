@@ -17,7 +17,7 @@ type    :    primitive_type
     
 primitive_type :
         numeric_type 
-    |    "BOOLEAN"
+    |   "BOOLEAN"
     ;
     
 numeric_type:    integral_type 
@@ -203,6 +203,7 @@ modifier :
     | "VOLATILE"
     | "STRICTFP"
     | "DEFAULT"
+    | annotation
     ;
 
 class_declaration : 
@@ -364,9 +365,44 @@ explicit_constructor_invocation :
     ;
 
 interface_declaration :
+        normal_interface_declaration
+    |   annotation_type_declaration
+    ;
+normal_interface_declaration :
         modifiers_opt "INTERFACE" "IDENTIFIER" type_parameters_opt
           extends_interfaces_opt interface_body
     ;
+
+annotation_type_declaration :
+      modifiers "AT" "INTERFACE" "IDENTIFIER" annotation_type_body
+    |           "AT" "INTERFACE" "IDENTIFIER" annotation_type_body
+    ;
+
+annotation_type_body :
+      "LBRACE" "RBRACE"
+    | "LBRACE" annotation_type_member_declarations "RBRACE"
+    ;
+
+annotation_type_member_declarations :
+      annotation_type_member_declaration
+    | annotation_type_member_declarations annotation_type_member_declaration
+    ;
+
+annotation_type_member_declaration :
+      annotation_type_element_declaration
+    | constant_declaration
+    | class_declaration
+    | interface_declaration
+    ;
+
+annotation_type_element_declaration :
+      modifiers_opt type "IDENTIFIER" "LPAREN" "RPAREN" dims_opt default_value_opt "SEMICOLON"
+    ;
+
+default_value_opt :
+      "DEFAULT" element_value
+    ;
+
 extends_interfaces_opt :
     |    extends_interfaces
     ;
@@ -397,6 +433,58 @@ constant_declaration :
     ;
 interface_method_declaration :
         method_header method_body
+    ;
+
+annotations_opt :
+    | annotations;
+
+annotations :
+      annotation
+    | annotations annotation;
+
+annotation :
+      normal_annotation
+    | marker_annotation
+    | single_element_annotation
+    ;
+
+normal_annotation :
+      "AT" name "LPAREN" element_value_pair_list "RPAREN"
+    | "AT" name "LPAREN"                         "RPAREN"
+    ;
+
+element_value_pair_list :
+      element_value_pair
+    | element_value_pair_list "COMMA" element_value_pair
+    ;
+
+element_value_pair :
+    "IDENTIFIER" "EQ" element_value
+    ;
+
+element_value :
+      conditional_expression
+    | element_value_array_initializer
+    ;
+
+element_value_array_initializer :
+      "LBRACE" element_value_list "COMMA" "RBRACE"
+    | "LBRACE"                    "COMMA" "RBRACE"
+    | "LBRACE" element_value_list         "RBRACE"
+    | "LBRACE"                            "RBRACE"
+    ;
+
+element_value_list :
+      element_value
+    | element_value_list "COMMA" element_value
+    ;
+
+marker_annotation :
+    "AT" name
+    ;
+
+single_element_annotation :
+      "AT" name "LPAREN" element_value "RPAREN"
     ;
 
 array_initializer :
@@ -430,8 +518,9 @@ local_variable_declaration_statement :
         local_variable_declaration "SEMICOLON" 
     ;
 local_variable_declaration :
-        type variable_declarators 
-    |    "FINAL" type variable_declarators
+                    type variable_declarators
+    |    "FINAL"    type variable_declarators
+    |    annotation type variable_declarators
     ;
 statement :    statement_without_trailing_substatement
     |    labeled_statement
