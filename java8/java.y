@@ -48,8 +48,9 @@ class_or_interface :
     |    class_or_interface "LT" type_argument_list_1 "DOT" name
     ;
 class_or_interface_type :
-        class_or_interface 
-    |    class_or_interface "LT" type_argument_list_1
+      class_or_interface
+    | class_or_interface "LT" type_argument_list_1
+    | class_or_interface "LT" "GT"
     ;
 
 class_type :    class_or_interface_type;
@@ -61,7 +62,9 @@ array_type :    primitive_type dims
     |    class_or_interface "LT" type_argument_list_1 dims
     ;
 
-type_arguments_opt : type_arguments |
+type_arguments_opt :
+    | type_arguments
+    | "LT" "GT"
     ;
 type_arguments :
         "LT" type_argument_list_1
@@ -623,7 +626,7 @@ primary_no_new_array :
     |    name dims "DOT" "CLASS"
     ;
 class_instance_creation_expression :
-        "NEW" class_or_interface_type "LPAREN" argument_list_opt "RPAREN" class_body_opt
+         "NEW"                class_or_interface_type "LPAREN" argument_list_opt "RPAREN" class_body_opt
     |    "NEW" type_arguments class_or_interface_type "LPAREN" argument_list_opt "RPAREN" class_body_opt
     |    primary "DOT" "NEW" type_arguments_opt "IDENTIFIER" type_arguments_opt
             "LPAREN" argument_list_opt "RPAREN" class_body_opt
