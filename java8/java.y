@@ -306,7 +306,9 @@ method_declarator :
     |    method_declarator "LBRACK" "RBRACK"
     ;
 formal_parameter_list_opt :
-    |    formal_parameter_list 
+    |    formal_parameter_list
+    |    formal_parameter_list "COMMA" last_formal_parameter
+    |                                  last_formal_parameter
     ;
 formal_parameter_list :
         formal_parameter 
@@ -315,8 +317,11 @@ formal_parameter_list :
 formal_parameter :
         type variable_declarator_id 
     |    "FINAL" type variable_declarator_id
-    |    type "ELLIPSIS" "IDENTIFIER"
-    |    "FINAL" type "ELLIPSIS" "IDENTIFIER"
+    ;
+
+last_formal_parameter :
+        "FINAL" type "ELLIPSIS" variable_declarator_id
+    |           type "ELLIPSIS" variable_declarator_id
     ;
 throws_opt :    
     |    throws
