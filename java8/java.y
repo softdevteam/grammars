@@ -53,7 +53,8 @@ class_or_interface_type :
     | class_or_interface "LT" "GT"
     ;
 
-class_type :    class_or_interface_type;
+unann_class_type :    class_or_interface_type;
+class_type :    annotations_opt class_or_interface_type;
 interface_type : class_or_interface_type;
 
 array_type :    primitive_type dims
@@ -689,8 +690,19 @@ catches :    catch_clause
     |    catches catch_clause
     ;
 catch_clause :
-        "CATCH" "LPAREN" formal_parameter "RPAREN" block
+        "CATCH" "LPAREN" catch_formal_parameter "RPAREN" block
     ;
+
+catch_formal_parameter :
+        unann_class_type variable_declarator_id
+    |   unann_class_type "OR" catch_type variable_declarator_id
+    ;
+
+catch_type :
+        class_type
+    |   catch_type "OR" class_type
+    ;
+
 finally :    "FINALLY" block
     ;
 assert_statement :
