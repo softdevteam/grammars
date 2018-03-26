@@ -139,14 +139,13 @@ qualified_name :
 
 
 compilation_unit :
-        package_declaration_opt 
-        import_declarations_opt
-        type_declarations_opt ;
-        
-package_declaration_opt : package_declaration | ;
-import_declarations_opt : import_declarations | ;
-type_declarations_opt   : type_declarations 
-                          | ;
+                                          import_declarations type_declarations_opt
+    |   modifiers_opt package_declaration import_declarations type_declarations_opt
+    |   modifiers_opt package_declaration                     type_declarations_opt
+    |                                                         type_declarations_opt
+    ;
+
+type_declarations_opt   : type_declarations   | ;
 
 import_declarations : 
         import_declaration
