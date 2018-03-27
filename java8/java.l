@@ -103,8 +103,8 @@ instanceof INSTANCEOF
 null NULL_LITERAL
 [a-zA-Z_][a-zA-Z0-9_]* IDENTIFIER
 
-'(?:\\'|[^'\n])*' CHARACTER_LITERAL
-"(?:\\"|[^"\n])*" STRING_LITERAL
+'(?:\\\\|\\'|[^'\n])*' CHARACTER_LITERAL
+"(?:\\\\|\\"|[^"\n])*" STRING_LITERAL
 /[*].*?[*]/ ;
 
 //[^\n]*?$ ;
