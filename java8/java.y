@@ -257,6 +257,8 @@ enum_body :
     ;
 enum_constants_opt :
     |    enum_constants
+    |    enum_constants "COMMA"
+    |    "COMMA"
     ;
 enum_constants :
         enum_constant
