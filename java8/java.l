@@ -98,7 +98,7 @@ instanceof INSTANCEOF
 \|= OREQ
 
 [0-9]+\.[0-9]*([eE][+-]?[0-9]+)?[fFdD]?|\.[0-9]+([eE][+-]?[0-9]+)?[fFdD]?|[0-9]+[eE][+-]?[0-9]+[fFdD]?|[0-9]+[fFdD] FLOATING_POINT_LITERAL
-(0_[0-7]+|0b[01]+|0x[0-9A-Fa-f]+|[0-9]+)[lL]? INTEGER_LITERAL
+(0_[0-7]+|0b[01]+|0[xX][0-9A-Fa-f]+|[0-9]+)[lL]? INTEGER_LITERAL
 (true|false) BOOLEAN_LITERAL
 null NULL_LITERAL
 [a-zA-Z_$][a-zA-Z0-9_$]* IDENTIFIER
