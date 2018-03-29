@@ -526,8 +526,7 @@ local_variable_declaration_statement :
     ;
 local_variable_declaration :
                     type variable_declarators
-    |    "FINAL"    type variable_declarators
-    |    annotation type variable_declarators
+    |    modifiers type variable_declarators
     ;
 statement :    statement_without_trailing_substatement
     |    labeled_statement
@@ -626,16 +625,12 @@ do_statement :
         "DO" statement "WHILE" "LPAREN" expression "RPAREN" "SEMICOLON"
     ;
 foreach_statement :
-        "FOR" "LPAREN" type variable_declarator_id "COLON" expression "RPAREN"
-            statement
-    |    "FOR" "IDENTIFIER" "LPAREN" type variable_declarator_id "IDENTIFIER"
-            expression "RPAREN" statement
+        "FOR" "LPAREN" modifiers type variable_declarator_id "COLON" expression "RPAREN" statement
+    |   "FOR" "LPAREN"           type variable_declarator_id "COLON" expression "RPAREN" statement
     ;
 foreach_statement_no_short_if :
-        "FOR" "LPAREN" type variable_declarator_id "COLON" expression "RPAREN"
-            statement_no_short_if
-    |    "FOR" "IDENTIFIER" "LPAREN" type variable_declarator_id "IDENTIFIER"
-            expression "RPAREN" statement_no_short_if
+        "FOR" "LPAREN" modifiers type variable_declarator_id "COLON" expression "RPAREN" statement_no_short_if
+    |   "FOR" "LPAREN"           type variable_declarator_id "COLON" expression "RPAREN" statement_no_short_if
     ;
 for_statement :
         "FOR" "LPAREN" for_init_opt "SEMICOLON" expression_opt "SEMICOLON"
