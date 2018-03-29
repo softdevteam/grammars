@@ -400,6 +400,7 @@ annotation_type_member_declaration :
     | constant_declaration
     | class_declaration
     | interface_declaration
+    | "SEMICOLON"
     ;
 
 annotation_type_element_declaration :
@@ -407,7 +408,7 @@ annotation_type_element_declaration :
     ;
 
 default_value_opt :
-      "DEFAULT" element_value
+    | "DEFAULT" element_value
     ;
 
 extends_interfaces_opt :
