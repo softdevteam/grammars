@@ -69,6 +69,7 @@ new NEW
 ! NOT
 / DIV
 % MOD
+-> ARROW
 << LSHIFT
 >> RSHIFT
 >>> URSHIFT

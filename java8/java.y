@@ -844,14 +844,12 @@ unary_expression_not_plus_minus :
     ;
 cast_expression :
         "LPAREN" primitive_type dims_opt "RPAREN" unary_expression
-    |    "LPAREN" name "RPAREN" unary_expression_not_plus_minus
+    |    "LPAREN" name      "RPAREN" unary_expression_not_plus_minus
     |    "LPAREN" name dims "RPAREN" unary_expression_not_plus_minus
-    |    "LPAREN" name "LT" type_argument_list_1 dims_opt "RPAREN"
-            unary_expression_not_plus_minus
-    |    "LPAREN" name "LT" type_argument_list_1 "DOT"
-            class_or_interface_type dims_opt "RPAREN"
-            unary_expression_not_plus_minus
+    |    "LPAREN" name "LT" type_argument_list_1 dims_opt "RPAREN" unary_expression_not_plus_minus
+    |    "LPAREN" name "LT" type_argument_list_1 "DOT" class_or_interface_type dims_opt "RPAREN" unary_expression_not_plus_minus
     ;
+
 multiplicative_expression :
         unary_expression 
     |    multiplicative_expression "MULT" unary_expression
@@ -932,8 +930,63 @@ assignment_operator :
 expression_opt :
     |    expression
     ;
-expression :    assignment_expression 
+expression :
+      lambda_expression
+    | assignment_expression
     ;
+
+lambda_expression :
+      lambda_parameters "ARROW" lambda_body
+    ;
+
+lambda_parameters :
+      "IDENTIFIER"
+    | "LPAREN" lambda_formal_parameter_list "RPAREN"
+    | "LPAREN" "RPAREN"
+    ;
+
+lambda_formal_parameter_list :
+        lambda_formal_parameter
+    |   lambda_formal_parameter_list "COMMA" lambda_formal_parameter
+    ;
+
+lambda_formal_parameter :
+       lambda_type variable_declarator_id
+    |  "FINAL" lambda_type variable_declarator_id
+    ;
+
+lambda_type :
+      primitive_type
+    | lambda_reference_type;
+
+lambda_reference_type :
+      lambda_class_or_interface_type
+    | lambda_array_type
+    ;
+
+lambda_array_type :
+       primitive_type dims
+    |  name dims
+    |  name "LT" type_argument_list_1 dims
+    |  name "LT" type_argument_list_1 "DOT" class_or_interface_type dims
+    ;
+
+lambda_class_or_interface_type :
+       name
+    |  name "LT" type_argument_list_1
+    |  name "LT" type_argument_list_1 "DOT" class_or_interface_type
+    ;
+
+inferred_formal_parameter_list :
+        name
+    |   inferred_formal_parameter_list "COMMA" name
+    ;
+
+lambda_body :
+       expression
+    |  block
+    ;
+
 constant_expression :
         expression
     ;
