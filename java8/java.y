@@ -744,6 +744,7 @@ primary_no_new_array :
     |    class_instance_creation_expression
     |    field_access
     |    method_invocation
+    |    method_reference
     |    array_access
     |    name "DOT" "THIS"
     |    "VOID" "DOT" "CLASS"
@@ -802,6 +803,18 @@ method_invocation :
     |    name "DOT" "SUPER" "DOT" "IDENTIFIER" "LPAREN" argument_list_opt "RPAREN"
     |    name "DOT" "SUPER" "DOT" type_arguments "IDENTIFIER" "LPAREN" argument_list_opt "RPAREN"
     ;
+
+method_reference :
+         reference_type "DOUBLECOLON" type_arguments_opt "IDENTIFIER"
+    ;
+temp:
+    |    primary "DOUBLECOLON" type_arguments_opt "IDENTIFIER"
+    |    "SUPER" "DOUBLECOLON" type_arguments_opt "IDENTIFIER"
+    |    name "DOT" "SUPER" "DOUBLECOLON" type_arguments_opt "IDENTIFIER"
+    |    class_type "DOUBLECOLON" type_arguments_opt "NEW"
+    |    array_type "DOUBLECOLON" "NEW"
+    ;
+
 array_access :
         name "LBRACK" expression "RBRACK"
     |    primary_no_new_array "LBRACK" expression "RBRACK"

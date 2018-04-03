@@ -20,6 +20,7 @@ double DOUBLE
 = EQ
 \( LPAREN
 \) RPAREN
+:: DOUBLECOLON
 : COLON
 @ AT
 package PACKAGE
