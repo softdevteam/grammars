@@ -592,8 +592,18 @@ catches :    catch_clause
     |    catches catch_clause
     ;
 catch_clause :
-        "CATCH" "LPAREN" formal_parameter "RPAREN" block
+        "CATCH" "LPAREN" catch_formal_parameter "RPAREN" block
     ;
+
+catch_formal_parameter :
+        modifiers_opt catch_type "IDENTIFIER"
+    ;
+
+catch_type :
+        name
+    |   catch_type "OR" name
+    ;
+
 finally :    "FINALLY" block
     ;
 assert_statement :
