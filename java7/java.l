@@ -32,7 +32,9 @@ native NATIVE
 synchronized SYNCHRONIZED
 transient TRANSIENT
 volatile VOLATILE
+strictfp STRICTFP
 class CLASS
+enum ENUM
 extends EXTENDS
 implements IMPLEMENTS
 void VOID
@@ -99,9 +101,7 @@ instanceof INSTANCEOF
 null NULL_LITERAL
 [a-zA-Z_][a-zA-Z0-9_]* IDENTIFIER
 
-strictfp STRICTFP
 ellipsis ELLIPSIS
-enum ENUM
 
 '(?:\\'|[^'\n])*' CHARACTER_LITERAL
 "(?:\\"|[^"\n])*" STRING_LITERAL
