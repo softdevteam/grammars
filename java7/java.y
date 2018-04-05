@@ -364,9 +364,45 @@ explicit_constructor_invocation :
     ;
 
 interface_declaration :
+        normal_interface_declaration
+    |   annotation_type_declaration
+    ;
+normal_interface_declaration :
         modifiers_opt "INTERFACE" "IDENTIFIER" type_parameters_opt
           extends_interfaces_opt interface_body
     ;
+
+annotation_type_declaration :
+        modifiers "AT" "INTERFACE" "IDENTIFIER" annotation_type_body
+    |             "AT" "INTERFACE" "IDENTIFIER" annotation_type_body
+    ;
+
+annotation_type_body :
+      "LBRACE" "RBRACE"
+    | "LBRACE" annotation_type_member_declarations "RBRACE"
+    ;
+
+annotation_type_member_declarations :
+      annotation_type_member_declaration
+    | annotation_type_member_declarations annotation_type_member_declaration
+    ;
+
+annotation_type_member_declaration :
+      annotation_type_element_declaration
+    | class_declaration
+    | interface_declaration
+    | enum_declaration
+    | constant_declaration
+    ;
+
+annotation_type_element_declaration :
+      modifiers_opt type "IDENTIFIER" "LPAREN" "RPAREN" dims_opt default_value_opt "SEMICOLON"
+    ;
+
+default_value_opt :
+    | "DEFAULT" element_value
+    ;
+
 extends_interfaces_opt :
     |    extends_interfaces
     ;
@@ -386,7 +422,7 @@ interface_member_declarations :
     ;
 interface_member_declaration :
         constant_declaration
-    |    abstract_method_declaration
+    |    interface_method_declaration
     |    class_declaration
     |    enum_declaration
     |    interface_declaration
@@ -395,7 +431,7 @@ interface_member_declaration :
 constant_declaration :
         field_declaration
     ;
-abstract_method_declaration :
+interface_method_declaration :
         method_header "SEMICOLON"
     ;
 
