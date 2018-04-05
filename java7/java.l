@@ -20,6 +20,7 @@ double DOUBLE
 \( LPAREN
 \) RPAREN
 : COLON
+@ AT
 package PACKAGE
 import IMPORT
 public PUBLIC

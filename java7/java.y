@@ -186,10 +186,19 @@ modifiers_opt:
 modifiers :     modifier 
     |    modifiers modifier
     ;
-modifier :    "PUBLIC" | "PROTECTED" | "PRIVATE"
-    |    "STATIC"
-    |    "ABSTRACT" | "FINAL" | "NATIVE" | "SYNCHRONIZED" | "TRANSIENT" | "VOLATILE"
-    |    "STRICTFP"
+modifier :
+      "PUBLIC"
+    | "PROTECTED"
+    | "PRIVATE"
+    | "STATIC"
+    | "ABSTRACT"
+    | "FINAL"
+    | "NATIVE"
+    | "SYNCHRONIZED"
+    | "TRANSIENT"
+    | "VOLATILE"
+    | "STRICTFP"
+    | annotation
     ;
 
 class_declaration : 
@@ -939,3 +948,48 @@ assignment_expression_nn :
     ;
 expression_nn :    assignment_expression_nn;
 
+
+annotation :
+      normal_annotation
+    | marker_annotation
+    | single_element_annotation
+    ;
+
+normal_annotation :
+      "AT" name "LPAREN" element_value_pair_list "RPAREN"
+    | "AT" name "LPAREN"                         "RPAREN"
+    ;
+
+element_value_pair_list :
+      element_value_pair
+    | element_value_pair_list "COMMA" element_value_pair
+    ;
+
+element_value_pair :
+    "IDENTIFIER" "EQ" element_value
+    ;
+
+element_value :
+      conditional_expression
+    | element_value_array_initializer
+    ;
+
+element_value_array_initializer :
+      "LBRACE" element_value_list "COMMA" "RBRACE"
+    | "LBRACE"                    "COMMA" "RBRACE"
+    | "LBRACE" element_value_list         "RBRACE"
+    | "LBRACE"                            "RBRACE"
+    ;
+
+element_value_list :
+      element_value
+    | element_value_list "COMMA" element_value
+    ;
+
+marker_annotation :
+    "AT" name
+    ;
+
+single_element_annotation :
+      "AT" name "LPAREN" element_value "RPAREN"
+    ;
