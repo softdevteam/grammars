@@ -10,6 +10,7 @@ float FLOAT
 double DOUBLE
 \[ LBRACK
 \] RBRACK
+\.\.\. ELLIPSIS
 \. DOT
 ; SEMICOLON
 \* MULT
@@ -101,8 +102,6 @@ instanceof INSTANCEOF
 (true|false) BOOLEAN_LITERAL
 null NULL_LITERAL
 [a-zA-Z_][a-zA-Z0-9_]* IDENTIFIER
-
-ellipsis ELLIPSIS
 
 '(?:\\'|[^'\n])*' CHARACTER_LITERAL
 "(?:\\"|[^"\n])*" STRING_LITERAL
