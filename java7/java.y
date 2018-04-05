@@ -583,8 +583,32 @@ synchronized_statement :
     ;
 try_statement :
         "TRY" block catches
-    |    "TRY" block catches_opt finally
+    |   "TRY" block catches_opt finally
+    |   try_with_resource_statement
     ;
+
+try_with_resource_statement :
+        "TRY" resource_specification block catches_opt finally
+    |   "TRY" resource_specification block catches_opt
+    ;
+
+resource_specification:
+        "LPAREN" resource_list "SEMICOLON" "RPAREN"
+    |   "LPAREN" resource_list             "RPAREN"
+    ;
+
+resource_list:
+        resource
+    |   resource_list "SEMICOLON" resource
+    ;
+
+resource:
+        annotation "FINAL" type variable_declarator_id "EQ" expression
+    |   annotation         type variable_declarator_id "EQ" expression
+    |              "FINAL" type variable_declarator_id "EQ" expression
+    |                      type variable_declarator_id "EQ" expression
+    ;
+
 catches_opt :
     |    catches
     ;
