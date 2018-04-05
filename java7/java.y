@@ -48,7 +48,8 @@ class_or_interface :
     ;
 class_or_interface_type :
         class_or_interface 
-    |    class_or_interface "LT" type_argument_list_1
+    |   class_or_interface "LT" type_argument_list_1
+    |   class_or_interface "LT" "GT"
     ;
 
 class_type :    class_or_interface_type;
@@ -64,6 +65,7 @@ type_arguments_opt : type_arguments |
     ;
 type_arguments :
         "LT" type_argument_list_1
+    |   "LT" "GT"
     ;
 wildcard :    "QUESTION"
     |    "QUESTION" "EXTENDS" reference_type
