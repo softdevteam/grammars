@@ -97,7 +97,7 @@ instanceof INSTANCEOF
 \^= XOREQ
 \|= OREQ
 
-[0-9]+\.[0-9]*([eE][+-]?[0-9]+)?[fFdD]?|\.[0-9]+([eE][+-]?[0-9]+)?[fFdD]?|[0-9]+[eE][+-]?[0-9]+[fFdD]?|[0-9]+[fFdD] FLOATING_POINT_LITERAL
+[0-9]+\.[0-9]*([eE][+-]?[0-9]+)?[fFdD]?|\.[0-9]+([eE][+-]?[0-9]+)?[fFdD]?|[0-9]+[eE][+-]?[0-9]+[fFdD]?|[0-9]+[fFdD]|0[xX][0-9A-Fa-f]+(\.[0-9A-Fa-f]*)?[pP][+-]?[0-9]+[fFdD]? FLOATING_POINT_LITERAL
 (0_[0-7]+|[0-9][0-9_]+[0-9]|0b[01]+|0[xX][0-9A-Fa-f]+|[0-9]+)[lL]? INTEGER_LITERAL
 (true|false) BOOLEAN_LITERAL
 null NULL_LITERAL
