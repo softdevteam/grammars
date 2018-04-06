@@ -137,14 +137,13 @@ qualified_name :
 
 
 compilation_unit :
-        package_declaration_opt 
-        import_declarations_opt
-        type_declarations_opt ;
-        
-package_declaration_opt : package_declaration | ;
-import_declarations_opt : import_declarations | ;
-type_declarations_opt   : type_declarations 
-                          | ;
+                                            import_declarations type_declarations_opt
+    |   annotations_opt package_declaration import_declarations type_declarations_opt
+    |   annotations_opt package_declaration                     type_declarations_opt
+    |                                                           type_declarations_opt
+    ;
+
+type_declarations_opt   : type_declarations   | ;
 
 import_declarations : 
         import_declaration
@@ -183,9 +182,13 @@ type_declaration :
     ;
 
 modifiers_opt:
-    |    modifiers 
+    |    modifiers
+    |    annotations
+    |    modifiers annotations
     ;
-modifiers :     modifier 
+modifiers :
+         modifier
+    |    annotations modifier
     |    modifiers modifier
     ;
 modifier :
@@ -200,7 +203,6 @@ modifier :
     | "TRANSIENT"
     | "VOLATILE"
     | "STRICTFP"
-    | annotation
     ;
 
 class_declaration : 
@@ -375,6 +377,8 @@ normal_interface_declaration :
 annotation_type_declaration :
         modifiers "AT" "INTERFACE" "IDENTIFIER" annotation_type_body
     |             "AT" "INTERFACE" "IDENTIFIER" annotation_type_body
+    |   annotations "AT" "INTERFACE" "IDENTIFIER" annotation_type_body
+    |   modifiers annotations "AT" "INTERFACE" "IDENTIFIER" annotation_type_body
     ;
 
 annotation_type_body :
@@ -468,6 +472,8 @@ local_variable_declaration_statement :
 local_variable_declaration :
                   type variable_declarators
     |   modifiers type variable_declarators
+    |   modifiers annotations type variable_declarators
+    |   annotations type variable_declarators
     ;
 statement :    statement_without_trailing_substatement
     |    labeled_statement
@@ -568,10 +574,14 @@ do_statement :
 foreach_statement :
         "FOR" "LPAREN"           type variable_declarator_id "COLON" expression "RPAREN" statement
     |   "FOR" "LPAREN" modifiers type variable_declarator_id "COLON" expression "RPAREN" statement
+    |   "FOR" "LPAREN" annotations type variable_declarator_id "COLON" expression "RPAREN" statement
+    |   "FOR" "LPAREN" modifiers annotations type variable_declarator_id "COLON" expression "RPAREN" statement
     ;
 foreach_statement_no_short_if :
         "FOR" "LPAREN"           type variable_declarator_id "COLON" expression "RPAREN" statement_no_short_if
     |   "FOR" "LPAREN" modifiers type variable_declarator_id "COLON" expression "RPAREN" statement_no_short_if
+    |   "FOR" "LPAREN" annotations type variable_declarator_id "COLON" expression "RPAREN" statement_no_short_if
+    |   "FOR" "LPAREN" modifiers annotations type variable_declarator_id "COLON" expression "RPAREN" statement_no_short_if
     ;
 for_statement :
         "FOR" "LPAREN" for_init_opt "SEMICOLON" expression_opt "SEMICOLON"
@@ -1018,6 +1028,12 @@ assignment_expression_nn :
     ;
 expression_nn :    assignment_expression_nn;
 
+annotations_opt : annotations | ;
+
+annotations :
+        annotation
+    |   annotations annotation
+    ;
 
 annotation :
       normal_annotation
