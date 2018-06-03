@@ -82,7 +82,61 @@ namelist
     : namelist "," "NAME"
     | "NAME"
     ;
-exp : "NIL"
+// Lua has 12 precedence levels which we encode as exp[0-11] (where "exp0" is,
+// for convenience, simply called "exp").
+exp : exp "OR" exp1
+    | exp1
+    ;
+exp1: exp1 "AND" exp2
+    | exp2
+    ;
+exp2: exp2 "<" exp3
+    | exp2 ">" exp3
+    | exp2 "<=" exp3
+    | exp2 ">=" exp3
+    | exp2 "~=" exp3
+    | exp2 "==" exp3
+    | exp3
+    ;
+exp3: exp3 "|" exp4
+    | exp4
+    ;
+exp4: exp4 "~" exp5
+    | exp5
+    ;
+exp5: exp5 "&" exp6
+    | exp6
+    ;
+exp6: exp6 "<<" exp7
+    | exp6 ">>" exp7
+    | exp7
+    ;
+exp7: exp8 ".." exp7
+    | exp8
+    ;
+exp8: exp8 "+" exp9
+    | exp8 "-" exp9
+    | exp9
+    ;
+exp9: exp9 "*" exp10
+    | exp9 "/" exp10
+    | exp9 "//" exp10
+    | exp9 "%" exp10
+    | exp10
+    ;
+exp10
+    : "NOT" exp10
+    | "#" exp10
+    | "-" exp10
+    | "~" exp10
+    | exp11
+    ;
+exp11
+    : exp12 "^" exp10
+    | exp12
+    ;
+exp12
+    : "NIL"
     | "FALSE"
     | "TRUE"
     | "NUMERAL"
@@ -91,8 +145,6 @@ exp : "NIL"
     | functiondef
     | prefixexp
     | tableconstructor
-    | exp binop exp
-    | unop exp
     ;
 prefixexp
     : var
@@ -140,34 +192,6 @@ fieldsep
 fieldsepopt
     : fieldsep
     |
-    ;
-binop
-    : "AND"
-    | "OR"
-    | "<"
-    | ">"
-    | "<="
-    | ">="
-    | "~="
-    | "=="
-    | "|"
-    | "~"
-    | "&"
-    | "<<"
-    | ">>"
-    | ".."
-    | "+"
-    | "-"
-    | "*"
-    | "/"
-    | "//"
-    | "^"
-    | "%"
-    ;
-unop: "NOT"
-    | "-"
-    | "#"
-    | "~"
     ;
 literalstring
     : "SHORT_STR"
