@@ -10,6 +10,11 @@ statlistopt
     : statlist
     |
     ;
+prefixexp
+    : var
+    | functioncall
+    | "(" exp ")"
+    ;
 stat
     : ";"
     | varlist "=" explist
@@ -145,11 +150,6 @@ exp12
     | functiondef
     | prefixexp
     | tableconstructor
-    ;
-prefixexp
-    : var
-    | functioncall
-    | "(" exp ")"
     ;
 functioncall
     : prefixexp args
