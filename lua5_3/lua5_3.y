@@ -13,11 +13,11 @@ statlistopt
 prefixexp
     : var
     | functioncall
-    | "(" exp ")"
+    | "LBRACKET" exp "RBRACKET"
     ;
 stat
-    : ";"
-    | varlist "=" explist
+    : "SEMICOL"
+    | varlist "EQ" explist
     | functioncall
     | label
     | "BREAK"
@@ -26,7 +26,7 @@ stat
     | "WHILE" exp "DO" block "END"
     | "REPEAT" block "UNTIL" exp
     | "IF" exp "THEN" block elselistopt elseopt "END"
-    | "FOR" "NAME" "=" exp "," explist "DO" block "END"
+    | "FOR" "NAME" "EQ" exp "COMMA" explist "DO" block "END"
     | "FOR" namelist "IN" explist "DO" block "END"
     | "FUNCTION" funcname funcbody
     | "LOCAL" "FUNCTION" "NAME" funcbody
@@ -37,26 +37,26 @@ retstatopt
     |
     ;
 label
-    : "::" "NAME" "::"
+    : "COLCOL" "NAME" "COLCOL"
     ;
 funcname
     : "NAME" funcnamelist
-    | "NAME" funcnamelist ":" "NAME"
+    | "NAME" funcnamelist "COL" "NAME"
     ;
 funcnamelist
-    : funcnamelist "." "NAME"
+    : funcnamelist "DOT" "NAME"
     |
     ;
 varlist
-    : varlist "," var
+    : varlist "COMMA" var
     | var
     ;
 var : "NAME"
-    | prefixexp "[" exp "]"
-    | prefixexp "." "NAME"
+    | prefixexp "LSQUARE" exp "RSQUARE"
+    | prefixexp "DOT" "NAME"
     ;
 explist
-    : explist "," exp
+    : explist "COMMA" exp
     | exp
     ;
 explistopt
@@ -64,7 +64,7 @@ explistopt
     |
     ;
 eqexplistopt
-    : "=" explist
+    : "EQ" explist
     |
     ;
 elselistopt
@@ -80,11 +80,11 @@ elseopt
     |
     ;
 semicolonopt
-    : ";"
+    : "SEMICOL"
     |
     ;
 namelist
-    : namelist "," "NAME"
+    : namelist "COMMA" "NAME"
     | "NAME"
     ;
 // Lua has 12 precedence levels which we encode as exp[0-11] (where "exp0" is,
@@ -95,49 +95,49 @@ exp : exp "OR" exp1
 exp1: exp1 "AND" exp2
     | exp2
     ;
-exp2: exp2 "<" exp3
-    | exp2 ">" exp3
-    | exp2 "<=" exp3
-    | exp2 ">=" exp3
-    | exp2 "~=" exp3
-    | exp2 "==" exp3
+exp2: exp2 "LT" exp3
+    | exp2 "GT" exp3
+    | exp2 "LE" exp3
+    | exp2 "GE" exp3
+    | exp2 "NOTEQ" exp3
+    | exp2 "EQEQ" exp3
     | exp3
     ;
-exp3: exp3 "|" exp4
+exp3: exp3 "PIPE" exp4
     | exp4
     ;
-exp4: exp4 "~" exp5
+exp4: exp4 "TILDE" exp5
     | exp5
     ;
-exp5: exp5 "&" exp6
+exp5: exp5 "AMP" exp6
     | exp6
     ;
-exp6: exp6 "<<" exp7
-    | exp6 ">>" exp7
+exp6: exp6 "LTLT" exp7
+    | exp6 "GTGT" exp7
     | exp7
     ;
-exp7: exp8 ".." exp7
+exp7: exp8 "DOTDOT" exp7
     | exp8
     ;
-exp8: exp8 "+" exp9
-    | exp8 "-" exp9
+exp8: exp8 "PLUS" exp9
+    | exp8 "MINUS" exp9
     | exp9
     ;
-exp9: exp9 "*" exp10
-    | exp9 "/" exp10
-    | exp9 "//" exp10
-    | exp9 "%" exp10
+exp9: exp9 "STAR" exp10
+    | exp9 "FSLASH" exp10
+    | exp9 "FSFS" exp10
+    | exp9 "MOD" exp10
     | exp10
     ;
 exp10
     : "NOT" exp10
-    | "#" exp10
-    | "-" exp10
-    | "~" exp10
+    | "HASH" exp10
+    | "MINUS" exp10
+    | "TILDE" exp10
     | exp11
     ;
 exp11
-    : exp12 "^" exp10
+    : exp12 "CARET" exp10
     | exp12
     ;
 exp12
@@ -146,16 +146,16 @@ exp12
     | "TRUE"
     | "NUMERAL"
     | literalstring
-    | "..."
+    | "DOTDOTDOT"
     | functiondef
     | prefixexp
     | tableconstructor
     ;
 functioncall
     : prefixexp args
-    | prefixexp ":" "NAME" args
+    | prefixexp "COL" "NAME" args
     ;
-args: "(" explistopt ")"
+args: "LBRACKET" explistopt "RBRACKET"
     | tableconstructor
     | literalstring
     ;
@@ -163,15 +163,15 @@ functiondef
     : "FUNCTION" funcbody
     ;
 funcbody
-    : "(" parlist ")" block "END";
+    : "LBRACKET" parlist "RBRACKET" block "END";
 parlist
-    : namelist "," "..."
+    : namelist "COMMA" "DOTDOTDOT"
     | namelist
-    | "..."
+    | "DOTDOTDOT"
     |
     ;
 tableconstructor
-    : "{" fieldlistopt "}";
+    : "LCURLY" fieldlistopt "RCURLY";
 fieldlistopt
     : fieldlist fieldsepopt
     |
@@ -181,13 +181,13 @@ fieldlist
     | field
     ;
 field
-    : "[" exp "]" "=" exp
-    | "NAME" "=" exp
+    : "LSQUARE" exp "RSQUARE" "EQ" exp
+    | "NAME" "EQ" exp
     | exp
     ;
 fieldsep
-    : ","
-    | ";"
+    : "COMMA"
+    | "SEMICOL"
     ;
 fieldsepopt
     : fieldsep
