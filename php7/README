@@ -1,0 +1,29 @@
+================================================================================
+  PHP 7.3 yacc grammar
+================================================================================
+
+This is an adaption of PHP's 7.3 Yacc grammar for grmtools.
+
+There are two major limitations to be aware of:
+
+1) Some PHP strings can't be parsed with lrlex's purely regular expression
+   based lexer. For example, PHP lexes strings containing variables, e.g.
+   `"hello ${name}"`, as `T_STRING_VARNAME`. Due to limitations in the lexer,
+   all strings will be lexed into `T_CONSTANT_ENCAPSED_STRING`. Other
+   unsupported strings are: T_ENCAPSED_AND_WHITESPACE, T_NUM_STRING.
+
+2) HEREDOC's and inlined HTML are currently not supported by the lexer at all.
+
+Some minor differences to the original grammar are:
+
+* Compiling this grammar results in 2 shift/reduce warnings. The reason for
+  this is the dangling else problem, which is implicitly solved by grmtools.
+  PHP resolves this problem by adding the non-existent `T_NOELSE` token, which
+  takes precedence over `else`. Since this token can't exist, shifting `else`
+  is chosen in favour of a reduction. However, grmtools requires all tokens to
+  be defined in the lexer, and thus the `T_NOELSE` token needed to be removed. 
+
+* There are a few token definitions that were removed from the grammar, since
+  those tokens are either thrown away by the lexer, or were never used by the
+  grammar. Those tokens are: T_COMMENT, T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO,
+  T_CLOSE_TAG, T_DOC_COMMENT.
