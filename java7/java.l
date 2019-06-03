@@ -102,7 +102,7 @@ instanceof "INSTANCEOF"
 null "NULL_LITERAL"
 [a-zA-Z_$][a-zA-Z0-9_$]* "IDENTIFIER"
 
-'(?:\\\\|\\'|[^'\n])*' "CHARACTER_LITERAL"
+'([^\t\n\r\f\\'\\]|\\[tnfr'"\\]|\\[0-3][0-7][0-7]|\\u[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F])' "CHARACTER_LITERAL"
 "(?:\\\\|\\"|[^"\n])*" "STRING_LITERAL"
 /[*].*?[*]/ ;
 
