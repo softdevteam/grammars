@@ -100,7 +100,7 @@ instanceof "INSTANCEOF"
 (0_[0-7]+|[0-9][0-9_]+[0-9]|0[bB][01]+|0[xX][0-9A-Fa-f]+|[0-9]+)[lL]? "INTEGER_LITERAL"
 (true|false) "BOOLEAN_LITERAL"
 null "NULL_LITERAL"
-[a-zA-Z_$][a-zA-Z0-9_$]* "IDENTIFIER"
+[\w_][\w_0-9]* "IDENTIFIER"
 
 '([^\t\n\r\f\\'\\]|\\[tnfr'"\\]|\\[0-3][0-7][0-7]|\\u[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F])' "CHARACTER_LITERAL"
 "(?:\\\\|\\"|[^"\n])*" "STRING_LITERAL"
