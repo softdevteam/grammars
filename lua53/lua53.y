@@ -58,6 +58,7 @@
 %epp DOT "."
 %epp DOTDOT ".."
 %epp DOTDOTDOT "..."
+%expect 1
 %%
 block
     : statlistopt retstatopt;
