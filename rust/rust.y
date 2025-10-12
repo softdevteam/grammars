@@ -234,10 +234,10 @@ outer_attr
 ;
 
 meta_item
-: ident
-| ident '=' lit
-| ident '(' meta_seq ')'
-| ident '(' meta_seq ',' ')'
+: path_no_types_allowed
+| path_no_types_allowed '=' expr
+| path_no_types_allowed '(' meta_seq ')'
+| path_no_types_allowed '(' meta_seq ',' ')'
 ;
 
 meta_seq
