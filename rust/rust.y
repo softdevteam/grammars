@@ -323,7 +323,7 @@ view_path
 |                               '{'                '}'
 |                               '{' idents_or_self '}'
 |                               '{' idents_or_self ',' '}'
-| path_no_types_allowed AS ident
+| path_no_types_allowed AS ident_or_underscore
 ;
 
 block_item
@@ -1713,6 +1713,11 @@ ident
 | CATCH
 | DEFAULT
 | UNION
+;
+
+ident_or_underscore
+: ident
+| UNDERSCORE
 ;
 
 unpaired_token
