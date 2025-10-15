@@ -59,6 +59,7 @@
 %token CATCH
 %token CRATE
 %token DO
+%token DYN
 %token ELSE
 %token ENUM
 %token EXTERN
@@ -121,6 +122,8 @@
 %left LAMBDA
 
 %left SELF
+
+%left DYN
 
 // MUT should be lower precedence than IDENT so that in the pat rule,
 // "& MUT pat" has higher precedence than "binding_mode ident [@ pat]"
@@ -985,6 +988,7 @@ ty_prim
 | %prec IDENT SELF MOD_SEP path_generic_args_without_colons
 | %prec IDENT path_generic_args_without_colons '!' maybe_ident delimited_token_trees
 | %prec IDENT MOD_SEP path_generic_args_without_colons '!' maybe_ident delimited_token_trees
+| DYN ty
 | BOX ty
 | '*' maybe_mut_or_const ty
 | '&' ty
