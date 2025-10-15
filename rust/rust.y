@@ -184,6 +184,8 @@
 %left '*' '/' '%'
 %left '!'
 
+%left PUB
+
 %left '{' '[' '(' '.'
 
 %left RANGE
@@ -476,6 +478,10 @@ fn_params_allow_variadic
 
 visibility
 : PUB
+| PUB '(' CRATE ')'
+| PUB '(' SELF ')'
+| PUB '(' SUPER ')'
+| PUB '(' IN path_no_types_allowed ')'
 | %empty
 ;
 
