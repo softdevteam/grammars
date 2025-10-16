@@ -59,6 +59,7 @@
 %token CATCH
 %token CRATE
 %token DO
+%token DYN
 %token ELSE
 %token ENUM
 %token EXTERN
@@ -122,6 +123,8 @@
 
 %left SELF
 
+%left DYN
+
 // MUT should be lower precedence than IDENT so that in the pat rule,
 // "& MUT pat" has higher precedence than "binding_mode ident [@ pat]"
 %left MUT
@@ -181,6 +184,8 @@
 %left '*' '/' '%'
 %left '!'
 
+%left PUB
+
 %left '{' '[' '(' '.'
 
 %left RANGE
@@ -234,10 +239,10 @@ outer_attr
 ;
 
 meta_item
-: ident
-| ident '=' lit
-| ident '(' meta_seq ')'
-| ident '(' meta_seq ',' ')'
+: path_no_types_allowed
+| path_no_types_allowed '=' expr
+| path_no_types_allowed '(' meta_seq ')'
+| path_no_types_allowed '(' meta_seq ',' ')'
 ;
 
 meta_seq
@@ -313,17 +318,22 @@ view_path
 : path_no_types_allowed
 | path_no_types_allowed MOD_SEP '{'                '}'
 |                       MOD_SEP '{'                '}'
-| path_no_types_allowed MOD_SEP '{' idents_or_self '}'
-|                       MOD_SEP '{' idents_or_self '}'
-| path_no_types_allowed MOD_SEP '{' idents_or_self ',' '}'
-|                       MOD_SEP '{' idents_or_self ',' '}'
+| path_no_types_allowed MOD_SEP '{' view_paths     '}'
+|                       MOD_SEP '{' view_paths     '}'
+| path_no_types_allowed MOD_SEP '{' view_paths ',' '}'
+|                       MOD_SEP '{' view_paths ',' '}'
 | path_no_types_allowed MOD_SEP '*'
 |                       MOD_SEP '*'
 |                               '*'
 |                               '{'                '}'
-|                               '{' idents_or_self '}'
-|                               '{' idents_or_self ',' '}'
-| path_no_types_allowed AS ident
+|                               '{' view_paths     '}'
+|                               '{' view_paths ',' '}'
+| path_no_types_allowed AS ident_or_underscore
+;
+
+view_paths
+: view_paths ',' view_path
+| view_path
 ;
 
 block_item
@@ -468,18 +478,11 @@ fn_params_allow_variadic
 
 visibility
 : PUB
+| PUB '(' CRATE ')'
+| PUB '(' SELF ')'
+| PUB '(' SUPER ')'
+| PUB '(' IN path_no_types_allowed ')'
 | %empty
-;
-
-idents_or_self
-: ident_or_self
-| idents_or_self AS ident
-| idents_or_self ',' ident_or_self
-;
-
-ident_or_self
-: ident
-| SELF
 ;
 
 item_type
@@ -790,6 +793,7 @@ ty_params
 //
 // These show up in 'use' view-items, because these are processed
 // without respect to types.
+// Same as: simple_path from the rust grammar.
 path_no_types_allowed
 : ident
 | MOD_SEP ident
@@ -985,6 +989,7 @@ ty_prim
 | %prec IDENT SELF MOD_SEP path_generic_args_without_colons
 | %prec IDENT path_generic_args_without_colons '!' maybe_ident delimited_token_trees
 | %prec IDENT MOD_SEP path_generic_args_without_colons '!' maybe_ident delimited_token_trees
+| DYN ty
 | BOX ty
 | '*' maybe_mut_or_const ty
 | '&' ty
@@ -1713,6 +1718,11 @@ ident
 | CATCH
 | DEFAULT
 | UNION
+;
+
+ident_or_underscore
+: ident
+| UNDERSCORE
 ;
 
 unpaired_token
